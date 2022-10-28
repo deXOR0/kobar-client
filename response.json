@@ -1,0 +1,48 @@
+{
+    "newBattle": {
+        "id": "b372a33a-7b73-4306-be54-45d52035898d",
+        "inviteCode": "2mbxh",
+        "problemId": "50089a0c-7031-4b3e-8176-b633b6bf1f29",
+        "startTime": "2022-10-27T01:26:54.823Z",
+        "endTime": "2022-10-27T01:36:54.823Z"
+    },
+    "problemAndExample": {
+        "id": "50089a0c-7031-4b3e-8176-b633b6bf1f29",
+        "prompt": "FizzBuzz merupakan sebuah permasalahan populer dalam dunia pemrograman untuk mengukur kemampuan pemahaman if-else, looping, operasi matematika, dan lainnya!\nTulis sebuah program singkat yang mengambil sebuah input angka N, mencetak masing-masing angka dari 1 hingga N\nBuat angka yang habis dibagi 3, jangan cetak angkanya, tapi cetak âFizzâ \nBuat angka yang habis dibagi 5, jangan cetak angkanya, tapi cetak âBuzzâ\nUntuk angka yang habis dibagi 3 **dan** 5, cetak âFizzBuzzâ!",
+        "inputFormat": "Sebuah angka N yaitu batas atas dari permainan FizzBuzz",
+        "outputFormat": "Masing-masing angka dari 1 hingga N dalam setiap baris atau kata âFizzâ, âBuzzâ, dan âFizzBuzzâ",
+        "exampleCount": 2,
+        "reviewVideoURL": "https://awesa.xyz/",
+        "reviewText": "Review Text",
+        "testCases": [
+            {
+                "id": "5fef4e69-9283-41f2-96f6-906042c9140c",
+                "input": "15",
+                "output": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz",
+                "order": 1,
+                "problemId": "50089a0c-7031-4b3e-8176-b633b6bf1f29"
+            },
+            {
+                "id": "cf1ad1c6-797f-4873-8493-163181c55605",
+                "input": "30",
+                "output": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16\n17\nFizz\n19\nBuzz\nFizz\n22\n23\nFizz\nBuzz\n26\nFizz\n28\n29\nFizzBuzz",
+                "order": 2,
+                "problemId": "50089a0c-7031-4b3e-8176-b633b6bf1f29"
+            }
+        ]
+    },
+    "users": [
+        {
+            "user": {
+                "id": "940b5d5c-f59a-4971-bf52-9e12ca891646",
+                "auth0Id": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Il9sUUVtamdzZzZJdm54dU03TEtvciJ9.eyJnaXZlbl9uYW1lIjoiQXdlc2EiLCJmYW1pbHlfbmFtZSI6IkF0eWFudGEiLCJuaWNrbmFtZSI6ImF3ZXNhYXR5YW50YS5wIiwibmFtZSI6IkF3ZXNhIEF0eWFudGEiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUxtNXd1MWlmZ2oweHYxc1lxYy1PSE5XUFlQdnp2Mmx5aEhHaEVGeEdHVE1yUT1zOTYtYyIsImxvY2FsZSI6ImVuIiwidXBkYXRlZF9hdCI6IjIwMjItMTAtMjRUMDI6Mjc6NDMuODYyWiIsImVtYWlsIjoiYXdlc2FhdHlhbnRhLnBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOi8vYXdlc2EuYXUuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTA0NjY5OTM1ODc2NDQ1NjUxMzc0IiwiYXVkIjoiYk52bUtkOGRWdktMY0t2TDdxUDR4dnl5N3Axa3B2Q2siLCJpYXQiOjE2NjY2NTc1MjcsImV4cCI6MTY2NjY5MzUyNywic2lkIjoiejJCeWtWMUpGa1VkYjBWODZKT3BXVlZUdGM4V0JpdkoifQ.OSwICjJBsf3eQv-cZg-gYNMSDoAJVumpRbNJGK_6YpBD6qmoLzM97w_mhcWAhJRP_bVQtIg7iJO7GzYjpRJmaWW2_svhqU0nvK4NpZymfFRGfhXxnGkE_91MiKxADzeuOcqtlbQZVKSIsmMW6r-KIBoCtglh_Teb75hPA5qln0-qMi93HowRyUhGpsg1tmf5YbRw31AnT4B9nYSnKlVbxCfsL8HwT__82p295251k_aahOvLdToInFkANzcbzUR-gM0hopGUb1c_iSq6WR6mzckZE6_C2rgXHsPVUeVKDgdb3q8LxgFz2DKTw3QxPk4XvRQtjm5IR5Pt4XtfQFjUbQ"
+            }
+        },
+        {
+            "user": {
+                "id": "b26542bc-22cd-49cb-942d-604dcb8aba79",
+                "auth0Id": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Il9sUUVtamdzZzZJdm54dU03TEtvciJ9.eyJuaWNrbmFtZSI6InBlcnNvbmFsIiwibmFtZSI6InBlcnNvbmFsQGF3ZXNhLnh5eiIsInBpY3R1cmUiOiJodHRwczovL3MuZ3JhdmF0YXIuY29tL2F2YXRhci8xOTljZGMxNTI5ZGE1NmI2ODA2NTdhNzNhZDdkZWQ4Nj9zPTQ4MCZyPXBnJmQ9aHR0cHMlM0ElMkYlMkZjZG4uYXV0aDAuY29tJTJGYXZhdGFycyUyRnBlLnBuZyIsInVwZGF0ZWRfYXQiOiIyMDIyLTEwLTI1VDAzOjE5OjA2LjUzOVoiLCJlbWFpbCI6InBlcnNvbmFsQGF3ZXNhLnh5eiIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiaXNzIjoiaHR0cHM6Ly9hd2VzYS5hdS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjM1MDA0MzRjZTcyMzg5OTBlZTZjMWE3IiwiYXVkIjoiYk52bUtkOGRWdktMY0t2TDdxUDR4dnl5N3Axa3B2Q2siLCJpYXQiOjE2NjY2Njk2OTksImV4cCI6MTY2NjcwNTY5OSwic2lkIjoiTmNrZ3VFbEhDQkJ4QnJfejZJTExuY3hWYUJxWjRfU0EifQ.cEybD8ny--jpG-6O-KVonun0OUzyWMb90Uw9mkvY1aLlaIh9Pc0So787oca_FFRpK9OXRUeL1JW2RE-uzkf5JkvtxAD8V59XHRDFw07vp1nDll3qCpHHDJd08NReKlGkv3AUsw10C0q8BPwUwioSZFnsNoaGbOyGdXVlNEMsqLuSel4RCU4ba_fpA20WgFMLTDov8PDdWUwWytkGF5Yc3BxJ0F4JJrHfJAhCmg7xh9gomApMEAqRMTgICXUFrNiK3Atm8361WAsra-rq_WAmE1qCbuSDNDv2r7m4-G5j07Q3I0pgw_j7AX07z1py5M5salggyCRt05eHS6EHM2zpTw"
+            }
+        }
+    ]
+}

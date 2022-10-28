@@ -1,0 +1,20 @@
+.new-line {
+    white-space: pre-line;
+    background-color: lightgray;
+    padding: 8px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.column {
+    flex-direction: column;
+}
+
+textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+}

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Client 1</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="center mt-4">
+                <form id="form" action="" class="col-4">
+                    <input
+                        type="text"
+                        name=""
+                        id="invite-code"
+                        class="form-control mb-3"
+                    />
+                    <div class="center">
+                        <input
+                            id="copy-invite-code"
+                            type="button"
+                            value="Copy Text"
+                            class="btn btn-primary me-2"
+                        />
+                        <input
+                            type="submit"
+                            value="Join Room"
+                            class="btn btn-primary"
+                        />
+                    </div>
+                    <div class="center mt-3">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="generate"
+                        >
+                            Generate a new room
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="center mt-4">
+                <h2>
+                    <span id="player-1"></span> vs <span id="player-2"></span>
+                </h2>
+            </div>
+            <div class="center column">
+                <h3>Soal</h3>
+                <p id="prompt" class="new-line"></p>
+            </div>
+            <div class="container" style="padding: 0">
+                <div class="row align-items-start">
+                    <div class="col">
+                        <h3>Format Input</h3>
+                        <p id="format-input" class="new-line"></p>
+                    </div>
+                    <div class="col">
+                        <h3>Format Output</h3>
+                        <p id="format-output" class="new-line"></p>
+                    </div>
+                </div>
+            </div>
+            <h3>Contoh</h3>
+            <div class="container" style="padding: 0" id="examples"></div>
+            <h3 class="mt-4">Code</h3>
+            <textarea
+                name=""
+                id="codingTextArea"
+                rows="10"
+                onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
+            ></textarea>
+            <div class="container mt-4" style="padding: 0">
+                <div class="row align-items-start">
+                    <div class="col">
+                        <h3>Input</h3>
+                        <textarea
+                            name=""
+                            id="inputTextArea"
+                            rows="10"
+                        ></textarea>
+                    </div>
+                    <div class="col">
+                        <h3>Output</h3>
+                        <textarea
+                            disabled
+                            name=""
+                            id="outputTextArea"
+                            rows="10"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="center mt-2 mb-4">
+                <button class="btn btn-primary me-2" id="run-code">
+                    Run code
+                </button>
+                <button class="btn btn-primary" id="submit-code">
+                    Submit code
+                </button>
+            </div>
+        </div>
+        <script src="index1.js"></script>
+        <script
+            src="https://cdn.socket.io/4.5.3/socket.io.min.js"
+            integrity="sha384-WPFUvHkB1aHA5TDSZi6xtDgkF0wXJcIIxXhC6h8OT8EH3fC5PWro5pWJ1THjcfEi"
+            crossorigin="anonymous"
+        ></script>
+        <script src="jwt.js"></script>
+        <script>
+            var socket = io("http://localhost:3000/battle", {
+                auth: { token: `Bearer ${accessToken}` },
+            });
+
+            const generate = document.getElementById("generate");
+            const form = document.getElementById("form");
+            const copyInviteCode = document.getElementById("copy-invite-code");
+            const inviteCode = document.getElementById("invite-code");
+            const current = document.getElementById("current");
+            const runCode = document.getElementById("run-code");
+            const submitCode = document.getElementById("submit-code");
+            const promptElement = document.getElementById("prompt");
+            const formatInputElement = document.getElementById("format-input");
+            const formatOutputElement =
+                document.getElementById("format-output");
+            const player1Element = document.getElementById("player-1");
+            const player2Element = document.getElementById("player-2");
+            const exampleElement = document.getElementById("examples");
+            let room;
+            let userId;
+
+            socket.emit("exchangeId", auth0Id);
+
+            socket.on("idExchanged", (obj) => {
+                console.log(obj);
+                const { userId: id } = obj;
+                sessionStorage.setItem("userId", id);
+                userId = sessionStorage.getItem("userId");
+            });
+
+            const saveRoomCode = (code) => {
+                sessionStorage.setItem("inviteCode", code);
+                room = sessionStorage.getItem("inviteCode");
+            };
+
+            const tempAlert = (msg, duration) => {
+                var el = document.createElement("div");
+                el.setAttribute(
+                    "style",
+                    "position:absolute;left:70%;top:1%;background-color:lightgreen;border-radius:2em;padding:1em"
+                );
+                el.innerHTML = msg;
+                setTimeout(function () {
+                    el.parentNode.removeChild(el);
+                }, duration);
+                document.body.appendChild(el);
+            };
+
+            copyInviteCode.addEventListener("click", () => {
+                inviteCode.select();
+                inviteCode.setSelectionRange(0, 99999); // For mobile devices
+                navigator.clipboard.writeText(inviteCode.value);
+            });
+
+            generate.addEventListener("click", () => {
+                socket.emit("createBattle", {
+                    userId,
+                    battleType: "invite",
+                });
+            });
+
+            runCode.addEventListener("click", () => {
+                socket.emit("run code", room);
+            });
+
+            submitCode.addEventListener("click", () => {
+                socket.emit("submit code", room);
+            });
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                if (inviteCode.value) {
+                    socket.emit("joinBattle", {
+                        userId,
+                        inviteCode: inviteCode.value,
+                    });
+                }
+                console.log("Clicked");
+            });
+
+            socket.on("battleCreated", (obj) => {
+                const { inviteCode: invitationCode } = obj;
+                saveRoomCode(invitationCode);
+                current.innerHTML = inviteCode.value = invitationCode;
+            });
+
+            const handleBattleStart = (problemAndExample, users) => {
+                console.table(problemAndExample, users);
+                const { prompt, inputFormat, outputFormat, testCases } =
+                    problemAndExample;
+                promptElement.innerHTML = prompt;
+                formatInputElement.innerHTML = inputFormat;
+                formatOutputElement.innerHTML = outputFormat;
+                const [player1, player2] = users;
+                const player1Decoded = jwt_decode(player1.user.auth0Id);
+                const player2Decoded = jwt_decode(player2.user.auth0Id);
+                console.log("TABLE");
+                console.table({ player1Decoded, player2Decoded, auth0Id });
+                if (player1.user.auth0Id === auth0Id) {
+                    player1Element.innerHTML = player1Decoded.name;
+                    player2Element.innerHTML = player2Decoded.name;
+                } else {
+                    player1Element.innerHTML = player2Decoded.name;
+                    player2Element.innerHTML = player1Decoded.name;
+                }
+
+                // <div class="row align-items-start">
+                //     <div class="col">
+                //         <p id="format-input" class="new-line"></p>
+                //     </div>
+                //     <div class="col">
+                //         <p id="format-output" class="new-line"></p>
+                //     </div>
+                // </div>;
+
+                while (exampleElement.hasChildNodes()) {
+                    exampleElement.removeChild(exampleElement.firstChild);
+                }
+
+                console.log(testCases);
+
+                testCases.forEach((testCase) => {
+                    console.log(testCase);
+                    const row = document.createElement("div");
+                    row.classList.add("row");
+                    row.classList.add("align-items-start");
+
+                    const inputSection = document.createElement("div");
+                    inputSection.classList.add("col");
+
+                    const input = document.createElement("p");
+                    input.classList.add("new-line");
+                    input.innerHTML = testCase.input;
+
+                    inputSection.appendChild(input);
+
+                    row.appendChild(inputSection);
+
+                    const outputSection = document.createElement("div");
+                    outputSection.classList.add("col");
+
+                    const output = document.createElement("p");
+                    output.classList.add("new-line");
+                    output.innerHTML = testCase.output;
+
+                    outputSection.appendChild(output);
+
+                    row.appendChild(outputSection);
+
+                    exampleElement.appendChild(row);
+                });
+            };
+
+            socket.on("battleJoined", (obj) => {
+                const { battle, problemAndExample, users } = obj;
+                saveRoomCode(battle.inviteCode);
+                inviteCode.value = battle.inviteCode;
+                handleBattleStart(problemAndExample, users);
+                console.log(problemAndExample);
+            });
+
+            socket.on("battleRejoined", (obj) => {
+                const { battle, problemAndExample, users } = obj;
+                saveRoomCode(battle.inviteCode);
+                inviteCode.value = battle.inviteCode;
+                handleBattleStart(problemAndExample, users);
+                console.log(problemAndExample);
+            });
+
+            socket.on("opponentFound", (obj) => {
+                const { battle, problemAndExample, users } = obj;
+                handleBattleStart(problemAndExample, users);
+            });
+
+            socket.on("opponentRejoined", () => {
+                tempAlert("Opponent rejoin the battle", 3000);
+            });
+
+            socket.on("alert", (msg) => {
+                console.log(msg);
+                tempAlert(msg, 3000);
+            });
+        </script>
+    </body>
+</html>
