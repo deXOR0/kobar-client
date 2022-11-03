@@ -88,7 +88,7 @@
             <h3 class="mt-4">Code</h3>
             <textarea
                 name=""
-                id="codingTextArea"
+                id="coding-text-area"
                 rows="10"
                 onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
             ></textarea>
@@ -98,7 +98,7 @@
                         <h3>Input</h3>
                         <textarea
                             name=""
-                            id="inputTextArea"
+                            id="input-text-area"
                             rows="10"
                         ></textarea>
                     </div>
@@ -107,7 +107,7 @@
                         <textarea
                             disabled
                             name=""
-                            id="outputTextArea"
+                            id="output-text-area"
                             rows="10"
                         ></textarea>
                     </div>
@@ -150,6 +150,9 @@
             const readyButton = document.getElementById("ready-button");
             const cancelButton = document.getElementById("cancel-button");
             const buttonGroup = document.getElementById("button-group");
+            const codingTextArea = document.getElementById("coding-text-area");
+            const inputTextArea = document.getElementById("input-text-area");
+            const outputTextArea = document.getElementById("output-text-area");
             let room;
             let userId;
             let battleId;
@@ -207,11 +210,16 @@
             });
 
             runCode.addEventListener("click", () => {
-                socket.emit("run code", room);
+                socket.emit("runCode", {
+                    userId,
+                    battleId,
+                    code: codingTextArea.value.trim(),
+                    input: inputTextArea.value.trim(),
+                });
             });
 
             submitCode.addEventListener("click", () => {
-                socket.emit("submit code", room);
+                socket.emit("submitCode", room);
             });
 
             form.addEventListener("submit", (e) => {
@@ -223,6 +231,20 @@
                     });
                 }
                 console.log("Clicked");
+            });
+
+            socket.on("codeRan", (obj) => {
+                const { type, output } = obj;
+                if (type === "correct") {
+                    tempAlert("Your code is correct!", 5000);
+                } else if (type === "incorrect") {
+                    tempAlert("Your code is incorrect! Try again!", 5000);
+                }
+                outputTextArea.value = output;
+            });
+
+            socket.on("opponentRunCode", () => {
+                tempAlert("Opponent ran their code", 3000);
             });
 
             socket.on("battleInvitationCreated", (obj) => {
