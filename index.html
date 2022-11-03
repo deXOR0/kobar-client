@@ -59,6 +59,14 @@
                     <span id="player-1"></span> vs <span id="player-2"></span>
                 </h2>
             </div>
+            <div class="center mt-4" id="button-group" style="display: none">
+                <button id="ready-button" class="btn btn-primary me-2">
+                    Ready
+                </button>
+                <button class="btn btn-danger" id="cancel-button">
+                    Cancel
+                </button>
+            </div>
             <div class="center column">
                 <h3>Soal</h3>
                 <p id="prompt" class="new-line"></p>
@@ -139,8 +147,12 @@
             const player1Element = document.getElementById("player-1");
             const player2Element = document.getElementById("player-2");
             const exampleElement = document.getElementById("examples");
+            const readyButton = document.getElementById("ready-button");
+            const cancelButton = document.getElementById("cancel-button");
+            const buttonGroup = document.getElementById("button-group");
             let room;
             let userId;
+            let battleId;
 
             socket.emit("exchangeId", { auth0Id });
 
@@ -168,6 +180,19 @@
                 }, duration);
                 document.body.appendChild(el);
             };
+
+            readyButton.addEventListener("click", () => {
+                socket.emit("readyBattle", {
+                    userId,
+                    battleId,
+                });
+            });
+
+            cancelButton.addEventListener("click", () => {
+                socket.emit("cancelBattle", {
+                    battleId,
+                });
+            });
 
             copyInviteCode.addEventListener("click", () => {
                 inviteCode.select();
@@ -206,18 +231,10 @@
                 current.innerHTML = inviteCode.value = invitationCode;
             });
 
-            const handleBattleStart = (problemAndExample, users) => {
-                console.table(problemAndExample, users);
-                const { prompt, inputFormat, outputFormat, testCases } =
-                    problemAndExample;
-                promptElement.innerHTML = prompt;
-                formatInputElement.innerHTML = inputFormat;
-                formatOutputElement.innerHTML = outputFormat;
+            const handleBattleJoined = (users) => {
                 const [player1, player2] = users;
                 const player1Decoded = jwt_decode(player1.user.auth0Id);
                 const player2Decoded = jwt_decode(player2.user.auth0Id);
-                console.log("TABLE");
-                console.table({ player1Decoded, player2Decoded, auth0Id });
                 if (player1.user.auth0Id === auth0Id) {
                     player1Element.innerHTML = player1Decoded.name;
                     player2Element.innerHTML = player2Decoded.name;
@@ -225,6 +242,17 @@
                     player1Element.innerHTML = player2Decoded.name;
                     player2Element.innerHTML = player1Decoded.name;
                 }
+
+                buttonGroup.style.display = "flex";
+            };
+
+            const handleBattleStarted = (problemAndExample) => {
+                console.log(problemAndExample);
+                const { prompt, inputFormat, outputFormat, testCases } =
+                    problemAndExample;
+                promptElement.innerHTML = prompt;
+                formatInputElement.innerHTML = inputFormat;
+                formatOutputElement.innerHTML = outputFormat;
 
                 // <div class="row align-items-start">
                 //     <div class="col">
@@ -271,30 +299,52 @@
 
                     exampleElement.appendChild(row);
                 });
+
+                readyButton.innerHTML = "Ready";
+                buttonGroup.style.display = "none";
             };
 
             socket.on("battleJoined", (obj) => {
                 const { battle } = obj;
-                const { problem, users } = battle;
+                const { users } = battle;
                 saveRoomCode(battle.inviteCode);
+                battleId = battle.id;
                 inviteCode.value = battle.inviteCode;
-                handleBattleStart(problem, users);
-                console.log(problem);
+                handleBattleJoined(users);
             });
 
             socket.on("battleRejoined", (obj) => {
                 const { battle } = obj;
                 const { problem, users } = battle;
                 saveRoomCode(battle.inviteCode);
+                battleId = battle.id;
                 inviteCode.value = battle.inviteCode;
-                handleBattleStart(problem, users);
-                console.log(problem);
+                handleBattleJoined(users);
+                handleBattleStarted(problem);
             });
 
             socket.on("opponentFound", (obj) => {
+                console.log(obj);
                 const { battle } = obj;
-                const { problem, users } = battle;
-                handleBattleStart(problem, users);
+                const { users } = battle;
+                battleId = battle.id;
+
+                handleBattleJoined(users);
+            });
+
+            socket.on("waitingForOpponent", () => {
+                readyButton.innerHTML = "Waiting for opponent";
+            });
+
+            socket.on("battleStarted", (obj) => {
+                const { battle } = obj;
+                const { problem } = battle;
+
+                handleBattleStarted(problem);
+            });
+
+            socket.on("battleCancelled", (obj) => {
+                location.reload();
             });
 
             socket.on("opponentRejoined", () => {
