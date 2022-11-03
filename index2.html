@@ -156,6 +156,7 @@
             let room;
             let userId;
             let battleId;
+            let problemId;
 
             socket.emit("exchangeId", { auth0Id });
 
@@ -219,7 +220,12 @@
             });
 
             submitCode.addEventListener("click", () => {
-                socket.emit("submitCode", room);
+                socket.emit("submitCode", {
+                    userId,
+                    battleId,
+                    problemId,
+                    code: codingTextArea.value.trim(),
+                });
             });
 
             form.addEventListener("submit", (e) => {
@@ -270,8 +276,11 @@
 
             const handleBattleStarted = (problemAndExample) => {
                 console.log(problemAndExample);
-                const { prompt, inputFormat, outputFormat, testCases } =
+                const { id, prompt, inputFormat, outputFormat, testCases } =
                     problemAndExample;
+
+                problemId = id;
+
                 promptElement.innerHTML = prompt;
                 formatInputElement.innerHTML = inputFormat;
                 formatOutputElement.innerHTML = outputFormat;
